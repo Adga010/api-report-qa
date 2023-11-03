@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     "users",
     'report_bug',
+    'corsheaders',
 ]
 
 # Se añade configuraciones de autenticación y permisos de DRF
@@ -77,6 +78,13 @@ SIMPLE_JWT = {
 # Nuevo modelo
 AUTH_USER_MODEL = 'users.CustomUser'
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Si estás desarrollando en local con el frontend en el puerto 3000
+    "http://127.0.0.1:3000",
+    # "https://tudominio.com",  # Añade tus otros dominios aquí
+]
 
 
 MIDDLEWARE = [
@@ -87,6 +95,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = "apireportdev.urls"
