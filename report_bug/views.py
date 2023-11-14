@@ -63,12 +63,11 @@ class BugReportRetrieveUpdateView(generics.RetrieveUpdateAPIView):
 @permission_classes([IsAuthenticated])
 class BugReportFileUploadView(APIView):
     parser_classes = [MultiPartParser]
-    
+
     VALID_AREA_CHOICES = [choice[0] for choice in BugReport.AREA_CHOICES]
     VALID_CAUSAL_CHOICES = [choice[0] for choice in BugReport.CAUSAL_CHOICES]
     VALID_STATUS_CHOICES = [choice[0] for choice in BugReport.STATUS_CHOICES]
     VALID_SEVERIDAD_CHOICES = [choice[0] for choice in BugReport.SEVERIDAD_CHOICES]
-
 
     def post(self, request):
         serializer = FileUploadSerializer(data=request.data)
@@ -82,43 +81,53 @@ class BugReportFileUploadView(APIView):
 
             # Iterar sobre todas las filas y columnas y verificar celdas vacías
             for index, row in data.iterrows():
-                
-                
                 # Validar AREA
                 if row["AREA"] not in self.VALID_AREA_CHOICES:
                     return Response(
-                        {"detail": f"En la fila {index + 1}, el valor '{row['AREA']}' en la columna 'AREA' no es válido."},
-                        status=status.HTTP_400_BAD_REQUEST
+                        {
+                            "detail": f"En la fila {index + 1}, el valor '{row['AREA']}' en la columna 'AREA' no es válido."
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
                     )
-                
+
                 # Validar CAUSAL
                 if row["CAUSAL"] not in self.VALID_CAUSAL_CHOICES:
                     return Response(
-                        {"detail": f"En la fila {index + 1}, el valor '{row['CAUSAL']}' en la columna 'CAUSAL' no es válido."},
-                        status=status.HTTP_400_BAD_REQUEST
+                        {
+                            "detail": f"En la fila {index + 1}, el valor '{row['CAUSAL']}' en la columna 'CAUSAL' no es válido."
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
                     )
-                
+
                 # Validar STATUS
                 if row["STATUS"] not in self.VALID_STATUS_CHOICES:
                     return Response(
-                        {"detail": f"En la fila {index + 1}, el valor '{row['STATUS']}' en la columna 'STATUS' no es válido."},
-                        status=status.HTTP_400_BAD_REQUEST
+                        {
+                            "detail": f"En la fila {index + 1}, el valor '{row['STATUS']}' en la columna 'STATUS' no es válido."
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
                     )
-                
+
                 # Validar SEVERIDAD
                 if row["SEVERIDAD"] not in self.VALID_SEVERIDAD_CHOICES:
                     return Response(
-                        {"detail": f"En la fila {index + 1}, el valor '{row['SEVERIDAD']}' en la columna 'SEVERIDAD' no es válido."},
-                        status=status.HTTP_400_BAD_REQUEST
-        )
+                        {
+                            "detail": f"En la fila {index + 1}, el valor '{row['SEVERIDAD']}' en la columna 'SEVERIDAD' no es válido."
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
                 for columna in data.columns:
                     if pd.isna(row[columna]):
-                        errores_celdas_vacias.append(f"En la fila {index + 2}, el campo {columna} se encuentra nulo.")
+                        errores_celdas_vacias.append(
+                            f"En la fila {index + 2}, el campo {columna} se encuentra nulo."
+                        )
 
             # Si hay errores, devuelves un mensaje de error
             if errores_celdas_vacias:
                 mensaje = " ".join(errores_celdas_vacias)
-                return Response({"detalle": mensaje}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"detalle": mensaje}, status=status.HTTP_400_BAD_REQUEST
+                )
 
             # Si todo está bien, procesas el archivo
             for index, row in data.iterrows():
@@ -142,3 +151,19 @@ class BugReportFileUploadView(APIView):
         else:
             return Response(serializer.errors, status=400)
 
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+class BugReportRetrieveDeleteView(generics.RetrieveDestroyAPIView):
+    queryset = BugReport.objects.all()
+    serializer_class = BugReportSerializer
+    lookup_field = "id"  # para buscar por ID
+
+    @authentication_classes([JWTAuthentication])
+    @permission_classes([IsAuthenticated])
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()  # Elimina la instancia del modelo de la base de datos
+        return Response(
+            status=status.HTTP_204_NO_CONTENT
+        )  # Retorna una respuesta HTTP 204 No Content
