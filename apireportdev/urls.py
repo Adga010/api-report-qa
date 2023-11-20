@@ -16,19 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
 # from users.sesion import LoginView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 urlpatterns = [
-    path('admin', admin.site.urls),
-    path('api/users', include('users.urls')),
-    path('api/report-bug', include('report_bug.urls')),
-    path('api/update-bug', include('report_bug.urls')),
-    path('api/upload-bug', include('report_bug.urls')),
-    path('api/delete-bug', include('report_bug.urls')),
+    path("admin", admin.site.urls),
+    path("api/users", include("users.urls")),
+    path("api/report-bug", include("report_bug.urls")),
+    path("api/update-bug", include("report_bug.urls")),
+    path("api/upload-bug", include("report_bug.urls")),
+    path("api/delete-bug", include("report_bug.urls")),
+    path("api/download-bug", include("report_bug.urls")),
+    path("api/get-bug", include("report_bug.urls")),
     # path('api/login/', LoginView.as_view(), name='login'),
-    
-    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path("api/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]

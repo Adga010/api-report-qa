@@ -4,6 +4,8 @@ from .views import (
     BugReportRetrieveUpdateView,
     BugReportFileUploadView,
     BugReportRetrieveDeleteView,
+    download_bug_reports,
+    get_bug_reports,
 )
 
 urlpatterns = [
@@ -20,9 +22,11 @@ urlpatterns = [
         BugReportFileUploadView.as_view(),
         name="upload-bug-reports",
     ),
-        path(
+    path(
         "/<uuid:id>/",
         BugReportRetrieveDeleteView.as_view(),
         name="bug-report-detail",
     ),
+    path("/download-bug-reports/", download_bug_reports, name="download-bug-reports"),
+    path("/get-bug-reports/", get_bug_reports, name="get-bug-reports"),
 ]
