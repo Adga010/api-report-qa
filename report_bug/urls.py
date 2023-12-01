@@ -10,7 +10,7 @@ from .views import (
 
 urlpatterns = [
     path(
-        "/register", BugReportListCreateView.as_view(), name="bug-reports-list-create"
+        "/register/", BugReportListCreateView.as_view(), name="bug-reports-list-create"
     ),
     path(
         "/<uuid:id>",
