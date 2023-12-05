@@ -349,14 +349,14 @@ def get_bug_reports(request):
 
     # Valores permitidos para causal, severidad y area
     causales_permitidas = [
-        "desarrollo",
-        "analisis",
-        "documentacion",
-        "testing",
-        "diseño",
+        "Desarrollo",
+        "Analisis",
+        "Documentacion",
+        "Testing",
+        "Diseño",
     ]
-    severidades_permitidas = ["funcional", "presentacion", "bloqueante"]
-    areas_permitidas = ["gestion del riesgo", "transversal", "mercadeo", "axces"]
+    severidades_permitidas = ["Funcional", "Presentacion", "Bloqueante"]
+    areas_permitidas = ["Gestion del Riesgo", "Transversal", "Mercadeo", "Axces"]
 
     # Controlar el parámetro causal
     if causal:

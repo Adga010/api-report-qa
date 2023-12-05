@@ -3,7 +3,7 @@ from .views import EstimacionProyectoListCreate
 
 urlpatterns = [
     path(
-        "/estimaciones",
+        "estimaciones/",
         EstimacionProyectoListCreate.as_view(),
         name="estimacion-proyecto-list-create",
     ),

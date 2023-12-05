@@ -7,7 +7,7 @@ class Proyecto(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     project_name = models.CharField(max_length=255, unique=True)
     AREA_CHOICES = [
-        ("Acces", "Axces"),
+        ("Axces", "Axces"),
         ("Transversal", "Transversal"),
         ("Gestion del Riesgo", "Gestion del Riesgo"),
         ("Mercadeo", "Mercadeo"),
